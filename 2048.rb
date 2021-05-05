@@ -1,9 +1,8 @@
-['board', 'graphics'].each{|script| require_relative script}
+['board'].each{|script| require_relative script}
 ['io/console', 'colorize'].each{ |g| require g }
 
 class GameRunner
-
-
+  
   @achievements = {
     16     => 'Unlock the 16 Tile',
     32     => 'Unlock the 32 Tile',
