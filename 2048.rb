@@ -12,9 +12,6 @@ class GameRunner
     512    => 'Unlock the 512 Tile',
     1_024  => 'Unlock the 1024 Tile',
     2_048  => 'Unlock the 2048 Tile',
-    4_096  => 'Unlock the 4096 Tile',
-    8_192  => 'Unlock the 8192 Tile',
-    16_384 => 'Unlock the 16384 Tile',
     "Score 500"     => 'Earn more than 500 points',
     "Score 1000"    => 'Earn more than 1000 points',
     "Score 2000"    => 'Earn more than 2000 points',
@@ -25,7 +22,7 @@ class GameRunner
 
   @unlocked   = []
   @scores     = [0]
-  @tiles      = [16, 32, 64, 128, 256, 512, 1_024, 2_048, 4_096, 8_192, 16_384]
+  @tiles      = [16, 32, 64, 128, 256, 512, 1_024, 2_048]
   @numbers    = [0, 2, 4, 8].concat(@tiles)
   @milestones = [500, 1_000, 2_000, 4_000, 8_000, 16_000]
   @board      = Board.new
