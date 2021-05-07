@@ -52,7 +52,6 @@ class Board
     # Board Constructor
     def initialize
         @board = Array.new(4) { [Tile.new(0), Tile.new(0), Tile.new(0), Tile.new(0)] }
-
         # Board that does not have any moves left --> for testing
         # @board = [[Tile.new(2), Tile.new(16), Tile.new(4), Tile.new(2)], 
         # [Tile.new(4), Tile.new(64), Tile.new(16), Tile.new(4)], 
@@ -182,16 +181,16 @@ class Board
     end
 end
 
-#Testing
-t = Board::Tile.new(2)
-t1 = Board::Tile.new(4)
-puts t.getTileVal
-puts t.isValidTile
-puts t.mult(4)
-puts t > t1
-
-b = Board.new
-b.draw_board
-b.resetBoard
-b.newTile
-puts b.stringify
+# #Testing
+# t = Board::Tile.new(2)
+# t1 = Board::Tile.new(4)
+# puts t.getTileVal
+# puts t.isValidTile
+# puts t.mult(4)
+# puts t > t1
+#
+# b = Board.new
+# b.draw_board
+# b.resetBoard
+# b.newTile
+# puts b.stringify

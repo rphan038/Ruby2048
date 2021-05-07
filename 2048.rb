@@ -2,36 +2,36 @@
 ['io/console', 'colorize'].each{ |g| require g }
 
 class GameRunner
-  
-  @achievements = {
-    16     => 'Unlock the 16 Tile',
-    32     => 'Unlock the 32 Tile',
-    64     => 'Unlock the 64 Tile',
-    128    => 'Unlock the 128 Tile',
-    256    => 'Unlock the 256 Tile',
-    512    => 'Unlock the 512 Tile',
-    1_024  => 'Unlock the 1024 Tile',
-    2_048  => 'Unlock the 2048 Tile',
-    "Score 500"     => 'Earn more than 500 points',
-    "Score 1000"    => 'Earn more than 1000 points',
-    "Score 2000"    => 'Earn more than 2000 points',
-    "Score 5000"    => 'Earn more than 5000 points',
-    "Score 10000"   => 'Earn more than 10000 points',
-    "HIGHEST SCORE" => 'Earn more than 20000 points'
-  }
-
-  @unlocked   = []
-  @scores     = [0]
-  @tiles      = [16, 32, 64, 128, 256, 512, 1_024, 2_048]
-  @numbers    = [0, 2, 4, 8].concat(@tiles)
-  @milestones = [500, 1_000, 2_000, 4_000, 8_000, 16_000]
-  @board      = Board.new
 
   def initialize
+    @board = Board.new
+    @milestones = [500, 1_000, 2_000, 4_000, 8_000, 16_000]
+    @tiles      = [16, 32, 64, 128, 256, 512, 1_024, 2_048]
+    @numbers    = [0, 2, 4, 8].concat(@tiles)
+    @unlocked   = []
+    @scores     = [0]
+    @colors     = %i(white white light_red red light_yellow yellow light_cyan
+                cyan light_green green light_blue blue light_magenta magenta)
+    @achievements = {
+      16     => 'Unlock the 16 Tile',
+      32     => 'Unlock the 32 Tile',
+      64     => 'Unlock the 64 Tile',
+      128    => 'Unlock the 128 Tile',
+      256    => 'Unlock the 256 Tile',
+      512    => 'Unlock the 512 Tile',
+      1_024  => 'Unlock the 1024 Tile',
+      2_048  => 'Unlock the 2048 Tile',
+      "Score 500"     => 'Earn more than 500 points',
+      "Score 1000"    => 'Earn more than 1000 points',
+      "Score 2000"    => 'Earn more than 2000 points',
+      "Score 5000"    => 'Earn more than 5000 points',
+      "Score 10000"   => 'Earn more than 10000 points',
+      "HIGHEST SCORE" => 'Earn more than 20000 points'
+    }
   end
 
   def game_score
-    @board.getBoard.flatten.inject(:+)
+    @board.getBoard.flatten.inject(0){|sum, n| sum + n.getTileVal}
   end
 
   def high_score
@@ -62,7 +62,7 @@ class GameRunner
   end
 
   def get_tiles
-      2.times { @board.newTile }
+    2.times { @board.newTile }
     draw_board
   end
 
@@ -83,7 +83,7 @@ class GameRunner
   def unlock_tiles
     @tiles.each do |tile|
       unless @unlocked.include?(@achievements[tile])
-        @unlocked << @achievements[tile] if (@board.getBoard.flatten.include?(tile))
+        @unlocked << @achievements[tile] if (@board.getBoard.flatten.inject([]){|array, boardTile| array << boardTile.getTileVal}.include?(tile))
       end
     end
   end
@@ -188,9 +188,6 @@ class GameRunner
     @scores << game_score
   end
 
-  @colors     = %i(white white light_red red light_yellow yellow light_cyan
-                cyan light_green green light_blue blue light_magenta magenta)
-
   def colorize_score
     game_score.to_s.yellow
   end
@@ -202,13 +199,13 @@ class GameRunner
     puts "\t\t ________________________________________"
   end
 
-  def colorize_number(num)
-    number = '%4.4s' % num
+  def colorize_number(tile)
+    number = '%4.4s' % tile.getTileVal
     color = ''
     colors_array = [@numbers.zip(@colors)].flatten(1)
 
     for i in 0..colors_array.length-1
-      color = number.colorize(colors_array[i][1]) if num == colors_array[i][0]
+      color = number.colorize(colors_array[i][1]) if tile.getTileVal == colors_array[i][0]
     end
 
     color.underline
