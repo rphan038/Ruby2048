@@ -61,7 +61,7 @@ class Board
 
     # Getter method for the BOARD instance variable
     def getBoard
-        @board
+        Marshal.load(Marshal.dump(@board))
     end
 
     # Helper method for the move methods
